@@ -24,14 +24,7 @@ class Solution(object):
         :rtype: str
         """
         strdict={}
-        """
-        for i in strs:
-            for j in strs[i]:
-                if j in strdict:
-                    strdict[j]+=1
-                else:
-                    strdict[j]=1 
-        """
+        
         if len(strs)>0:
             min_len=len(strs[0])
         else:
