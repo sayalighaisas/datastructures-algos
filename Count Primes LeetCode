@@ -1,0 +1,57 @@
+'''
+Count the number of prime numbers less than a non-negative number, n.
+
+Example:
+
+Input: 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+'''
+
+
+class Solution(object):
+    def countPrimes(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        #Sieve of Eratoshenes logic, assume all nos to be prime and then eliminate the ones that are multiples            starting from 2 upto i*i < n
+        if n<=2:
+            return 0
+        
+        count_arr=[]
+        '''
+        for i in range(n):
+            count_arr[i]=1
+        print count_arr 
+        '''
+        #prime = [True for i in range(n-1)]
+        prime =  [True]*(n)
+        prime[0]=prime[1]=False
+
+        #in nested for loop it is giving time limit exceeded thus use approach of step function in list
+        '''
+        for i in range(2,n):
+            if i*i < n:
+                if prime[i] is True:
+                    #print "here"
+                    for j in range(2,n):
+                        if i*j < n:
+                            prime[i*j]=False        #Set all the multiples of each number to False in inner loop
+                        else:
+                            break
+            else:
+                 break   
+                
+        count_of_primes=0
+        for i in prime:
+            if i==True:
+                count_of_primes += 1
+        return count_of_primes
+        '''
+        
+        for i in range(2,int(n**0.5)+1):
+            if prime[i]:
+                prime[i*i:n:i]=[False]*len(prime[i*i:n:i])     #to set False for each value in LHS hence len(LHS)
+        return sum(prime)
+    
