@@ -7,7 +7,11 @@ Example:
 Given nums = [2, 7, 11, 15], target = 9,
 
 Because nums[0] + nums[1] = 2 + 7 = 9,
-return [0, 1].'''
+return [0, 1].
+
+HashSet 1 pass solution: most efficient- vals returned as found while building the dict.
+TC: O(N) SC:O(N) for dict ds.
+'''
 
 
 
@@ -26,5 +30,5 @@ class Solution(object):
                 result_list.append(i)
                 result_list.append(dict[val])
             else:
-                dict[nums[i]]=i
+                dict[nums[i]]=i  #dict has key=no in nums and value=index of no
         return result_list
