@@ -72,10 +72,10 @@ class Solution(object):
                     if top!="{":
                         return False
                     
-        if len(stack)==0:
-            return True
-        else:
+        if len(stack)!=0:
             return False
+        else:
+            return True
         
         
         
