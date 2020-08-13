@@ -23,8 +23,9 @@ class Solution(object):
         :type s: List[str]
         :rtype: None Do not return anything, modify s in-place instead.
         """
-        total=len(s)-1
+        total=len(s)-1  #to hold index of last char
         for i in range(len(s)/2):
-            tmp=s[i]
+            tmp=s[i]     #swap 1st and last char and so on
             s[i]=s[total-i]
             s[total-i]=tmp
+        return s
