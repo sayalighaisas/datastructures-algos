@@ -1,0 +1,47 @@
+Merge two sorted linked lists and return it as a new sorted list. The new list should be made by splicing together the nodes of the first two lists.
+
+Example:
+
+Input: 1->2->4, 1->3->4
+Output: 1->1->2->3->4->4
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        #prehead maintains an unchanging reference to node ahead of return node st prehead.next is head of merged list
+        prehead=ListNode(-1)
+        prev=prehead
+        while l1 and l2:    #both not empty
+            if l1.val<=l2.val:
+                prev.next=l1 #assign smaller node viz head of l1
+                l1=l1.next   #move head of l1 ahead
+            else:
+                prev.next=l2
+                l2=l2.next
+            prev=prev.next #IMP:prev holds the current value in merged list and is the iterator while merging so keep appending to prev.next
+        
+        #On reaching end of either list only append the other list as is to end of merged list
+        prev.next=l1 or l2 #whichever is non-null will be appended
+        
+        return prehead.next
+        
+        
+        
+        #######
+Time complexity : O(n + m)O(n+m)
+
+Because exactly one of l1 and l2 is incremented on each loop iteration, the while loop runs for a number of iterations equal to the sum of the lengths of the two lists. All other work is constant, so the overall complexity is linear.
+
+Space complexity : O(1)O(1)
+
+The iterative approach only allocates a few pointers, so it has a constant overall memory footprint.
+        
