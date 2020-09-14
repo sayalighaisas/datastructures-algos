@@ -1,0 +1,37 @@
+Reverse a singly linked list.
+
+Example:
+
+Input: 1->2->3->4->5->NULL
+Output: 5->4->3->2->1->NULL
+
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    head_ret = ListNode()
+    def reverse_ll(self,curr):
+        
+        if curr == None:
+            return
+        
+        if curr.next == None:
+            self.head_ret = curr
+            return
+        
+        self.reverse_ll(curr.next)
+        curr.next.next = curr
+        curr.next = None
+        
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        
+        self.reverse_ll(head)
+        return self.head_ret
+ 
