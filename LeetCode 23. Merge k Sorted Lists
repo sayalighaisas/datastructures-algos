@@ -1,0 +1,69 @@
+#####
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+Merge all the linked-lists into one sorted linked-list and return it.
+
+ 
+
+Example 1:
+
+Input: lists = [[1,4,5],[1,3,4],[2,6]]
+Output: [1,1,2,3,4,4,5,6]
+Explanation: The linked-lists are:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+merging them into one sorted list:
+1->1->2->3->4->4->5->6
+Example 2:
+
+Input: lists = []
+Output: []
+Example 3:
+
+Input: lists = [[]]
+Output: []
+ 
+
+Constraints:
+
+k == lists.length
+0 <= k <= 10^4
+0 <= lists[i].length <= 500
+-10^4 <= lists[i][j] <= 10^4
+lists[i] is sorted in ascending order.
+The sum of lists[i].length won't exceed 10^4.
+####
+
+
+from Queue import PriorityQueue
+#initialize q as object of class PriorityQueue
+#PriorityQueue Has 2 functions: q.put((val,info)) which builds min heap with heapify internally and q.get() will return the min value from root of heap.
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        prehead = curr = ListNode()
+        q = PriorityQueue()
+        for l in lists:
+            if l:  #gets first val of each list
+                q.put((l.val, l))  #heapify function runs on the val and linkedlist is passed as 2nd elem of tuple to get next val of that list 
+            
+        while not q.empty():
+            val, node = q.get() #returns val=root of min heap and node which will contain rest of the list to move to next val
+            curr.next = ListNode(val) #add val to result linked list
+            curr = curr.next
+            node = node.next #move to next val of that list
+            if node:
+                q.put((node.val, node)) #if next node exists in list then it is added back to q and the heap is reconstructed.
+        return prehead.next
