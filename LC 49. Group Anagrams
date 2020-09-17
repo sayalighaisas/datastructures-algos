@@ -31,7 +31,7 @@ class Solution:
         result_dict=collections.defaultdict(list)# in default dict if key is not present it is added else the value is appended to existing key so no if-else req.
         for s in strs:
             result_dict[tuple(sorted(s))].append(s)
-        print(result_dict.keys())
+        #print(result_dict.keys())
         return result_dict.values()
         
         
