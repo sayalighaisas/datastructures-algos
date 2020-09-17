@@ -17,17 +17,20 @@ class Solution(object):
         :type nums: List[int]
         :rtype: None Do not return anything, modify nums in-place instead.
         """
+
         countofzeros=0
         for i in nums:
             if i==0:
                 countofzeros+=1
                 
+         #from start of arr fill all the non-zero elements starting from index 0 and sequentially ahead       
         index=0
         for i in nums:
             if i != 0:
                 nums[index]=i
                 index+=1
         
+        #append no of 0s at end of arr
         for i in range(countofzeros):
             nums[index]=0
             index+=1
