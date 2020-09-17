@@ -19,7 +19,7 @@ class Solution(object):
         curr=head
         prev=None
         while curr is not None:
-            cnext=curr.next
+            cnext=curr.next #save curr.next in cnext before updating ptr
             curr.next=prev #ptr update to pt back
             prev=curr
             curr=cnext
