@@ -1,0 +1,51 @@
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+Note:
+
+The same word in the dictionary may be reused multiple times in the segmentation.
+You may assume the dictionary does not contain duplicate words.
+Example 1:
+
+Input: s = "leetcode", wordDict = ["leet", "code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+Example 2:
+
+Input: s = "applepenapple", wordDict = ["apple", "pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+             Note that you are allowed to reuse a dictionary word.
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+Output: false
+
+from collections import defaultdict
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        
+        dp=[False]*(len(s)+1) #0th bit of dp array is set to True and rest values map from 0 to n of list thus size n+1
+        dp[0]=True
+        for i in range(len(s)+1):
+            for j in range(i):
+                if dp[j] and s[j:i] in wordDict:   #if end of substr s1' is marked True and s2' exists in wordlist
+        #IMP: slice operation on list gives slice from i to j-1
+                    dp[i]=True
+        return dp[-1] #the last value in dp array should be true for entire string to fullfill the criteria(all subproblems satisfy conditions so entire string satisfies too dp bottom-up)  
+        '''
+    #Can optimize further by converting worlist to dictionary(may still keep complexity same depending on how strings are hashed in dict)
+        
+        dp=[False]*(len(s)+1)
+        dp[0]=True
+        
+        word_Dict = defaultdict(int)
+        for item in wordDict:
+            word_Dict[item] = 1
+            
+        for i in range(len(s)+1):
+            for j in range(0,i):
+                if dp[j] and s[j:i] in word_Dict:
+                    dp[i]=True
+        return dp[-1]
+        
+        '''
