@@ -29,7 +29,7 @@ class Solution:
         for i in range(len(s)+1):
             for j in range(i):
                 if dp[j] and s[j:i] in wordDict:   #if end of substr s1' is marked True and s2' exists in wordlist
-        #IMP: slice operation on list gives slice from i to j-1
+        #IMP: slice operation on list gives slice from j to i-1
                     dp[i]=True
         return dp[-1] #the last value in dp array should be true for entire string to fullfill the criteria(all subproblems satisfy conditions so entire string satisfies too dp bottom-up)  
         '''
