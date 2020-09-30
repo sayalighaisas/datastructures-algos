@@ -1,0 +1,40 @@
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+Example 1:
+
+Input: [[0, 30],[5, 10],[15, 20]]
+Output: 2
+Example 2:
+
+Input: [[7,10],[2,4]]
+Output: 1
+
+
+
+
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        
+        if not intervals:
+            return 0
+        
+        free_rooms=[] #initialize heap
+        
+        intervals.sort(key=lambda x:x[0])
+        
+        #the heap will contain only end times
+        #add end time of first meeting in heap, as we will allocate 1 new room to 1st meeting
+        heapq.heappush(free_rooms, intervals[0][1])
+        
+        #the room due to free up earliest will always be at top of heap
+        for i in intervals[1:]:  #for all remaining times in intervals (s'=i[0] and e'=i[1])
+            
+            #if disjoint intervals and do not overlap ie start time>= prior end time (also = if 1st meeting ends at 10 next can still start at 10)
+            if i[0]>=free_rooms[0]:
+                heapq.heappop(free_rooms) #the new meeting can take place in same room so you pop it from heap 
+                
+            #add end time to heap in both cases
+            heapq.heappush(free_rooms,i[1])
+            
+        return(len(free_rooms))
+            
