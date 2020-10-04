@@ -76,3 +76,5 @@ class Solution:
         return minutes_elapsed if fresh_oranges==0 else -1
                 
                 
+                TC: 0(N)
+                
