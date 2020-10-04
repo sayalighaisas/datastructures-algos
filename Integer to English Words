@@ -1,0 +1,127 @@
+Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+
+Example 1:
+
+Input: 123
+Output: "One Hundred Twenty Three"
+Example 2:
+
+Input: 12345
+Output: "Twelve Thousand Three Hundred Forty Five"
+Example 3:
+
+Input: 1234567
+Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+Example 4:
+
+Input: 1234567891
+Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
+
+
+DIVIDE AND CONQUER:
+Let's simplify the problem by representing it as a set of simple sub-problems. One could split the initial integer 1234567890 on the groups containing not more than three digits 1.234.567.890. That results in representation 1 Billion 234 Million 567 Thousand 890 and reduces the initial problem to how to convert 3-digit integer to English word. One could split further 234 -> 2 Hundred 34 into two sub-problems : convert 1-digit integer and convert 2-digit integer. The first one is trivial. The second one could be reduced to the first one for all 2-digit integers but the ones from 10 to 19 which should be considered separately.
+
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        #5 fuctions for: a) 3 for parts to decompose in each 3-digit set ,  b) 1(Hundred place)/(Units place), c) 2(tens+ units place)  c1) tens and c2) less than 20(10-19)
+        
+        def one(num):
+            num_dict= {
+                1: 'One',
+                2: 'Two',
+                3: 'Three',
+                4: 'Four',
+                5: 'Five',
+                6: 'Six',
+                7: 'Seven',
+                8: 'Eight',
+                9: 'Nine'
+            }
+            return num_dict[num]
+        
+        def ten(num):
+            num_dict= {
+                2: 'Twenty',
+                3: 'Thirty',
+                4: 'Forty',
+                5: 'Fifty',
+                6: 'Sixty',
+                7: 'Seventy',
+                8: 'Eighty',
+                9: 'Ninety'
+            }
+            return num_dict[num]
+    
+        def less_than_20(num):
+            num_dict={
+                10: 'Ten',
+                11: 'Eleven',
+                12: 'Twelve',
+                13: 'Thirteen',
+                14: 'Fourteen',
+                15: 'Fifteen',
+                16: 'Sixteen',
+                17: 'Seventeen',
+                18: 'Eighteen',
+                19: 'Nineteen'             
+            }
+            return num_dict[num]
+        
+        def two(num):
+            # 3 cases:
+            if not num:
+                return ''
+            elif num<10:
+                return one(num)
+            elif num<20: #between 10-19 is special case so handle as seperate function
+                return less_than_20(num)
+            else:
+                tenner=num//10
+                rest=num-tenner*10
+                if rest:
+                    return ten(tenner)+ ' '+ one(rest)
+                else:
+                    return ten(tenner)
+        
+        def three(num): #Split each 3-digit into 2parts: 1(hundred) and 2 (rest)  
+            hundred=num//100
+            rest=num-hundred*100
+            
+            #3 cases:
+            if hundred and rest:
+                return one(hundred)+ ' Hundred ' + two(rest)
+            elif not hundred and rest:
+                return two(rest)
+            elif hundred and not rest:
+                return one(hundred)+ ' Hundred'
+            
+        
+        #Split in 4 components and solve smaller subproblems(3-digit) of each component independantly
+        billion= num//1000000000
+        million=(num-billion*1000000000)//1000000
+        thousand=(num-billion*1000000000-million*1000000)//1000
+        rest=num-billion*1000000000-million*1000000-thousand*1000
+        
+        if not num:
+            return 'Zero'
+        else:
+            result=''  #each part will be sequentially added
+            if billion:
+                result=three(billion)+ ' Billion' #append word string after each component
+            if million:
+                if result:
+                    result+=' ' 
+                result+=three(million)+ ' Million' 
+            if thousand:
+                if result:
+                    result+=' ' 
+                result+=three(thousand)+ ' Thousand'
+            if rest:
+                if result:
+                    result+=' ' 
+                result+=three(rest)
+                
+            return result
+        
+        TC: 0(N)
+        SC: 0(1) o/p string
