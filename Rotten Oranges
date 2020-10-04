@@ -1,0 +1,78 @@
+In a given grid, each cell can have one of three values:
+
+the value 0 representing an empty cell;
+the value 1 representing a fresh orange;
+the value 2 representing a rotten orange.
+Every minute, any fresh orange that is adjacent (4-directionally) to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange.  If this is impossible, return -1 instead.
+
+ Input: [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+Example 2:
+
+Input: [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation:  The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+Example 3:
+
+Input: [[0,2]]
+Output: 0
+Explanation:  Since there are already no fresh oranges at minute 0, the answer is just 0.
+ 
+
+Note:
+
+1 <= grid.length <= 10
+1 <= grid[0].length <= 10
+grid[i][j] is only 0, 1, or 2.
+
+
+
+
+
+import collections
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        queue=collections.deque()
+        
+        #PART 1
+        #Build the initial grid setup with fresh_oranges counter and add rotten oranges to queue
+        fresh_oranges=0
+        ROWS,COLS=len(grid),len(grid[0])
+        #In nested for we interate over every elem only once so overall TC is 0(n)
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c]==2:#if rotten orange at that position append position as tuple(r,c)
+                    queue.append((r,c))
+                elif grid[r][c]==1: #increment fresh oranges counter
+                    fresh_oranges+=1
+                    
+          #After each cycle of neighboring rotten oranges, a marker is added to queue it is fixed val of (-1,-1). Add first one after initial setup. Queue contains elements and (-1,-1) at end 
+        queue.append((-1,-1))
+        
+        #PART 2 Rotting process checked via BFS
+        minutes_elapsed=-1 #initialize
+        directions=[(0,-1),(0,1),(-1,0),(1,0)] #4 directions l,r,top,down are checked for every position
+        while queue:
+            row,col=queue.popleft()
+            
+            if row==-1: #check marker, when marker popped minutes incremented
+                minutes_elapsed+=1 
+                
+                if queue: #until queue not empty keep adding marker to mark all rotten of previous round added. Will exit after last marker popped and avoid endless loop
+                        queue.append((-1,-1))
+                
+            else: #rotten orange popped from queue will contaminate its neighbours
+                for d in directions:#iterates 4 times for each position
+                    nbr_row,nbr_col=row+d[0],col+d[1]
+                    if 0<=nbr_row<ROWS and 0<=nbr_col<COLS:
+                        if grid[nbr_row][nbr_col]==1: #if fresh then it gets contaminated ie set to 2
+                            grid[nbr_row][nbr_col]=2
+                            fresh_oranges-=1
+                            #add this orange position in rotten queue
+                            queue.append((nbr_row,nbr_col))
+                            
+        return minutes_elapsed if fresh_oranges==0 else -1
+                
+                
