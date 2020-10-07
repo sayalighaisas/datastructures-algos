@@ -1,0 +1,76 @@
+Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
+
+For example,
+[2,3,4], the median is 3
+
+[2,3], the median is (2 + 3) / 2 = 2.5
+
+Design a data structure that supports the following two operations:
+
+void addNum(int num) - Add a integer number from the data stream to the data structure.
+double findMedian() - Return the median of all elements so far.
+ 
+
+Example:
+
+addNum(1)
+addNum(2)
+findMedian() -> 1.5
+addNum(3) 
+findMedian() -> 2
+ 
+
+Follow up:
+
+If all integer numbers from the stream are between 0 and 100, how would you optimize it?
+If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?
+
+
+#See 2 heaps eg
+
+import heapq
+class MedianFinder:
+#2 heaps
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.lowerhalf=[] #create max heap for lower half thus root will be largest elem
+        self.upperhalf=[] #create min heap for upper half thus root will be smallest elem
+
+    
+    
+    def addNum(self, num: int) -> None:
+      #case of 1st elem add to max heap
+        if len(self.lowerhalf)==0:
+            heapq.heappush(self.lowerhalf, -num)   #IMP:Heapq internally implements minheap so push -ive of no eg(-3) and pop -(-3) viz max as in negative no line nos are reversed(push and pop negative of values to implement max heap)
+     #(-ve sign because to implement max heap using the default heapq in python, we need to negate the values)
+            return
+        
+        #if new elem in data stream is less than or equal to root of max heap then it can be added to lowerhalf else add to upperhalf
+        if num <= -(self.lowerhalf[0]): #compare with -(root of max heap)
+            heapq.heappush(self.lowerhalf, -num)#add to max heap
+        else:
+            heapq.heappush(self.upperhalf, num)#add to min heap
+            
+        #Adjust the balance for no of elements in both heaps:  lower maxhp can have at most n+1 elements while upper min heap can have at most n elements(total is 2n+1 elements)
+        if len(self.lowerhalf)-len(self.upperhalf)>1:
+            heapq.heappush(self.upperhalf, - heapq.heappop(self.lowerhalf)) #negation of root is popped and pushed to upperhalf
+        elif len(self.upperhalf)-len(self.lowerhalf)>=1:
+            heapq.heappush(self.lowerhalf, - heapq.heappop(self.upperhalf))#root is popped and pushed to lowerhalf
+            
+        
+
+    def findMedian(self) -> float:
+        #if both heaps have same number of elements ie total even no of elements then median is mean(avg) of roots of both heaps
+        if len(self.lowerhalf)==len(self.upperhalf):
+            return(-(self.lowerhalf[0])+self.upperhalf[0])/2.0
+        #else return the root node of lower half viz nth elem mid for odd no of elements
+        else:
+            return -float(self.lowerhalf[0])
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
