@@ -1,0 +1,61 @@
+Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its zigzag level order traversal as:
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        #using 2 stacks s1 and s2 
+        
+        if not root:
+            return []
+        
+        s1=[]
+        s2=[]
+        levels=[]
+        s1.append(root)
+        while s1 or s2:
+            l1=[]
+            while s1:
+                node=s1.pop()
+                l1.append(node.val)
+                #l to r into s2
+                if node.left:
+                    s2.append(node.left)
+                if node.right:
+                    s2.append(node.right)
+            if l1:
+                levels.append(l1)
+            l2=[]
+            while s2:
+                node2=s2.pop()
+                l2.append(node2.val)
+                # r to l into s1
+                if node2.right:
+                    s1.append(node2.right)
+                if node2.left:
+                    s1.append(node2.left)
+            if l2:
+                levels.append(l2)
+        return levels
