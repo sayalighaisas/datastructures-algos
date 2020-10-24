@@ -12,7 +12,7 @@ Example 2:
 Input: "race a car"
 Output: false
 '''
-##Additional logic : isalnum to remove the spaces and consider only alphabets and numbers
+##Additional logic : isalnum to omit the spaces and special char and consider only alphabets and numbers
 
 class Solution(object):
     def isPalindrome(self, s):
@@ -23,7 +23,7 @@ class Solution(object):
         low=0
         hi=len(s)-1
         while low<hi:
-            while low<hi and not s[low].isalnum():   #skip blanck spaces
+            while low<hi and not s[low].isalnum():   #skip blanck spaces and spcl char
                 low+=1
             while low<hi and not s[hi].isalnum():   #skip blanck spaces
                 hi-=1
