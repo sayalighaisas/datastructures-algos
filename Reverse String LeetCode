@@ -16,7 +16,8 @@ Example 2:
 Input: ["H","a","n","n","a","h"]
 Output: ["h","a","n","n","a","H"]
 '''
-
+'''
+Depricated
 class Solution(object):
     def reverseString(self, s):
         """
@@ -29,3 +30,20 @@ class Solution(object):
             s[i]=s[total-i]
             s[total-i]=tmp
         return s
+'''
+
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        left=0
+        right=len(s)-1
+        while left<right: #till midway index
+            s[left],s[right]=s[right],s[left] #swap
+            left+=1
+            right-=1
+            
+            
+            #TC:0(N) to swap N/2 elem
+            #SC: 0(1)
