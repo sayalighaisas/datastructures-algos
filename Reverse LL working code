@@ -1,0 +1,30 @@
+class Node():
+    def __init__(self,val):
+        self.val=val
+        self.next=None
+        
+def reverse(head):
+    curr=head
+    prev=None
+    while curr is not None:
+        cnext=curr.next
+        curr.next=prev #set to prev
+        prev=curr
+        curr=cnext
+    head=prev
+    print(head.val)
+    return head
+
+def insert(head,val):
+    node=Node(val)
+    curr=head
+    while curr.next is not None:
+        curr=curr.next
+    curr.next=node
+    
+head=Node(1)
+insert(head,2)
+insert(head,3)
+insert(head,4)
+print(head.val)
+
