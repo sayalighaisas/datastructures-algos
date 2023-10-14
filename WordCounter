@@ -1,0 +1,22 @@
+Word Frequency Counter:
+Given a list of words, count the frequency of each word and store the results in a dictionary.
+
+
+def wordCnt(txt):
+    dict1={}
+    for i in range(len(txt)):
+        if txt[i] not in dict1:
+            dict1[txt[i]]= 1
+        else:
+            dict1[txt[i]]+=1
+    return dict1
+    
+    
+if __name__=="__main__":
+    txt=['this','is','simple','this','is']
+    op=wordCnt(txt)
+    print(op)
+
+
+
+O/p: {'this':2,'is':2,'simple':1}
